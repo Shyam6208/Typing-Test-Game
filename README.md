@@ -57,8 +57,7 @@ Contributions are always welcome! Feel free to:
 
 ## 📧 **Contact**
 
-📬 **Reach me at**:(shyam.s6208@gmail.com)  
-🌐 **Follow me on Instagram**: [@your_instagram](https://instagram.com/your_instagram)  
+📬 **Reach me at**:(shyam.s6208@gmail.com)   
 
 ---
 
