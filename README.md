@@ -2,7 +2,8 @@
 
 Welcome to the **Typing Test Game**, a simple and fun game to test your typing speed and accuracy! Built using **HTML**, **CSS**, and **JavaScript**. Challenge yourself and improve your typing skills! 🚀
 
-![Typing Test Game Preview](https://via.placeholder.com/800x400) <!-- Replace with an actual screenshot or GIF -->
+![Typing Test Game Preview](![Game Screenshot](https://drive.google.com/uc?export=view&id=1vEGX5MtFmSzeV9MgEiiSn6bO7kb5zcOm)
+) <!-- Replace with an actual screenshot or GIF -->
 
 ## 🎯 **Features**
 - ⏲️ **Dynamic Text Generation**: Different texts for varying time durations.
@@ -38,7 +39,9 @@ You can easily customize the text, timing, and styles in the game by editing the
 
 ## 📸 **Screenshots**
 
-![Game Screenshot](https://drive.google.com/file/d/1vEGX5MtFmSzeV9MgEiiSn6bO7kb5zcOm/view?usp=sharing) <!-- Replace with actual scrnshots -->
+![Game Screenshot](https://drive.google.com/uc?export=view&id=12u2D_aE_z6FVVXFSiTp47vxffOWwl-8m)
+
+
 
 ## 🤝 **Contributing**
 
