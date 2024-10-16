@@ -1,0 +1,134 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #1c1c1e;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    
+  }
+  
+  .container {
+    width: 80%;
+    max-width: 1200px;
+    text-align: center;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    font-size: 1.2rem;
+  }
+  
+  .logo {
+    text-align: center;
+    color: #ffb400;
+    font-size: 1.5rem;
+  }
+  
+  .options span {
+    margin-right: 15px;
+    color: #999999;
+  }
+  
+  .controls {
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+  }
+  
+  .text-display {
+    margin: 20px 0;
+    font-size: 2rem;
+    color: #555555;
+    text-align: left;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .text-display span {
+    margin-right: 10px;
+  }
+  
+  .typing-area {
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    outline: none;
+  }
+  
+  .wpm-display {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    color: #ffb400;
+  }
+  
+  footer {
+    margin-top: 50px;
+  }
+  
+  footer .settings {
+    color: #999999;
+    font-size: 0.8rem;
+  }
+  
+  .correct {
+    color: #ffffff;
+  }
+  
+  .incorrect {
+    color: red;
+  }
+  
+  .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.5rem;
+    background-color: yellow;
+    animation: blink 0.8s infinite;
+  }
+  
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  .results {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .wpm-display, .accuracy-display {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .accuracy-bar {
+    width: 100%;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    height: 20px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+  
+  .accuracy-fill {
+    height: 100%;
+    width: 100%;
+    background-color: green;
+    transition: width 0.3s;
+  }
+  

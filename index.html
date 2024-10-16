@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typing Speed Test</title>
+  <link rel="icon" type="image/png" href="./medium.png">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1 class="logo">Typing Test Game</h1>
+      <div class="options">
+      </div>
+    </header>
+
+    <main>
+      <div class="controls">
+        <label for="timeSelect">Choose time:</label>
+        <select id="timeSelect">
+          <option value="30" selected>30 seconds</option>
+          <option value="60">60 seconds</option>
+          <option value="120">120 seconds</option>
+        </select>
+        <button id="startButton">Start Test</button>
+        <span id="timerDisplay">Time: 30s</span>
+      </div>
+
+      <div id="textDisplay" class="text-display">
+      </div>
+      <textarea id="typingArea" class="typing-area" placeholder="Start typing here..." disabled></textarea>
+      
+      <div class="results">
+        <div id="wpmDisplay" class="wpm-display">WPM: 0</div>
+        <div id="accuracyDisplay" class="accuracy-display">Accuracy: 100%</div>
+        <div id="accuracyBar" class="accuracy-bar">
+          <div id="accuracyFill" class="accuracy-fill"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
