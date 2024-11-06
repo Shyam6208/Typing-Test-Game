@@ -3,40 +3,50 @@ const typingArea = document.getElementById("typingArea");
 const startButton = document.getElementById("startButton");
 const timerDisplay = document.getElementById("timerDisplay");
 const wpmDisplay = document.getElementById("wpmDisplay");
-const accuracyDisplay = document.getElementById('accuracyDisplay');
-const accuracyBar = document.getElementById('accuracyFill');
+const accuracyDisplay = document.getElementById("accuracyDisplay");
+const accuracyBar = document.getElementById("accuracyFill");
 const timeSelect = document.getElementById("timeSelect");
 
 let testTexts = {
-  30: "few word still both people off hand over most fact present man no own should when face day group open life of such public can increase like little fact home like person all say tell good well",
-  60: "the quick brown fox jumps over the lazy dog while another creature waits in the shadow, preparing for a leap to the next challenge that would test agility and wit,programming languages like JavaScript and Python are often used to build web applications, which are interactive and require user input to function properly, offering vast possibilities to developers",
-  120: "The quick brown fox jumps over the lazy dog near the riverbank. It was a bright and sunny day, with the wind blowing gently through the trees. Birds were chirping, and the leaves rustled softly as the breeze passed by. In the distance, children could be heard laughing and playing, their voices echoing across the park. Suddenly, a loud noise interrupted the peaceful scene. Everyone paused for a moment, looking around to see what had happened."
+  30: [
+    "it was the best of times it was the worst of times it was the age of wisdom it was the age of foolishness it was the epoch of belief ",
+    "the epoch of incredulity it was the season of light it was the season of darkness it was the spring of hope it was the winter of despair ",
+    "we had everything before us we were all going direct to heaven we were all going direct the other way"
+  ],
+  60: [
+    "in the age of technology innovation drives progress at an unprecedented pace from artificial intelligence to quantum computing the tools",
+    "we create shape the future of industries and societies alike embracing change and adapting to new challenges will empower us",
+    "Web development includes coding, testing, and designing. A well-built website can attract many users and provide valuable information."
+  ],
+  120: [
+    "success is not the key to happiness happiness is the key to success if you love what you are doing you will be successful the journey of a thousand miles begins with one step believe in yourself ",
+    "Programming languages like JavaScript, Python, and Ruby offer developers various tools and libraries that simplify coding and debugging processes. However, mastering these languages requires time, dedication, and practice. A well-structured program is not just about solving a problem; it’s about solving it efficiently and in a way that others can understand and modify later.",
+    "The evolution of technology has dramatically reshaped human civilization. From the invention of the wheel to the digital revolution, every milestone has brought new challenges and opportunities. Today, the internet connects billions of people across the world, allowing instant communication and access to vast amounts of information. As technology continues to advance, the need for cybersecurity, data privacy, and ethical AI usage becomes ever more critical."
+  ]
 };
 
 let timeLimit = 30;
 let timer;
 let startTime;
-let isRunning = false;
-let cursorSpan;
-let wordIndex = 0;
-let wordCount = 0;
-let correctWordCount = 0;  // Counter for correct words
-let typingStarted = false;  // Flag to check if typing has started
+let correctCharCount = 0;
+let typingStarted = false;
+
+startButton.addEventListener("click", startTest);
 
 function startTest() {
-  resetTest();  // Reset everything when starting a new test
+  resetTest();
   
-  timeLimit = parseInt(timeSelect.value); // Get the new selected time
-  testText = testTexts[timeLimit]; // Choose the text based on the selected time
-  displayText(testText); // Display the selected text
+  timeLimit = parseInt(timeSelect.value);
+  const testTextArray = testTexts[timeLimit];
+  const randomIndex = Math.floor(Math.random() * testTextArray.length);
+  const testText = testTextArray[randomIndex];
+  displayText(testText);
   
   typingArea.disabled = false;
   typingArea.value = "";
   typingArea.focus();
 
   timerDisplay.textContent = `Time: ${timeLimit}s`;
-
-  typingArea.addEventListener("input", onInput);
 }
 
 function updateTimer() {
@@ -48,7 +58,7 @@ function updateTimer() {
     clearInterval(timer);
     typingArea.disabled = true;
     calculateWPM();
-    calculateAccuracy(); // Show accuracy at the end of the test
+    calculateAccuracy();
     return;
   }
 
@@ -56,94 +66,121 @@ function updateTimer() {
 }
 
 function calculateWPM() {
-  const elapsedMinutes = (new Date().getTime() - startTime) / 60000; // Convert milliseconds to minutes
-  const wpm = Math.floor(correctWordCount / elapsedMinutes);  // WPM based on correct words only
+  const elapsedMinutes = (new Date().getTime() - startTime) / 60000;
+  const wordCount = correctCharCount / 5;
+  const wpm = Math.floor(wordCount / elapsedMinutes);
   wpmDisplay.textContent = `WPM: ${wpm}`;
 }
 
 function calculateAccuracy() {
-  const totalTypedWords = wordCount;  // Total words typed (correct + incorrect)
-  const accuracy = (correctWordCount / totalTypedWords) * 100;  // Calculate accuracy percentage
-  
-  // Update accuracy display and progress bar
+  const totalTypedChars = typingArea.value.length;
+  const accuracy = totalTypedChars > 0 ? (correctCharCount / totalTypedChars) * 100 : 0;
+
   accuracyDisplay.textContent = `Accuracy: ${accuracy.toFixed(2)}%`;
-  accuracyBar.style.width = `${accuracy}%`;  // Fill the progress bar according to accuracy
+  accuracyBar.style.width = `${accuracy}%`;
+  accuracyBar.style.backgroundColor = accuracy > 80 ? 'green' : 'red'; // Change color based on performance
 }
 
 function displayText(text) {
-  const words = text.split(' ');
-  textDisplay.innerHTML = ''; // Clear the text display
+  textDisplay.innerHTML = '';
 
-  words.forEach(word => {
+  text.split('').forEach(char => {
     const span = document.createElement('span');
-    span.textContent = word;
+    span.textContent = char;
     textDisplay.appendChild(span);
   });
-
-  cursorSpan = document.createElement('span');
-  cursorSpan.classList.add('cursor');
-  textDisplay.appendChild(cursorSpan);
 }
 
 function onInput() {
-  if (!typingStarted) {  // Start timer only when typing starts
+  if (!typingStarted) {
     startTime = new Date().getTime();
     typingStarted = true;
     timer = setInterval(updateTimer, 1000);
   }
 
-  const inputWords = typingArea.value.trim().split(' ');
+  const inputChars = typingArea.value.split('');
   const textSpans = textDisplay.querySelectorAll("span");
 
-  wordCount = inputWords.length;  // Update the total word count typed
+  correctCharCount = 0;
 
-  correctWordCount = 0;  // Reset correct word counter for this input check
-
-  textSpans.forEach((wordSpan, index) => {
-    const inputWord = inputWords[index];
-    if (inputWord) {
-      const actualWord = wordSpan.textContent;
-      if (inputWord === actualWord) {
-        wordSpan.classList.add('correct');
-        wordSpan.classList.remove('incorrect');
-        correctWordCount++;  // Increment correct word count if match
-      } else {
-        wordSpan.classList.add('incorrect');
-        wordSpan.classList.remove('correct');
-      }
+  textSpans.forEach((charSpan, index) => {
+    const inputChar = inputChars[index];
+    if (inputChar == null) {
+      charSpan.classList.remove('correct', 'incorrect', 'current');
+    } else if (inputChar === charSpan.textContent) {
+      charSpan.classList.add('correct');
+      charSpan.classList.remove('incorrect');
+      correctCharCount++;
     } else {
-      wordSpan.classList.remove('correct', 'incorrect');
+      charSpan.classList.add('incorrect');
+      charSpan.classList.remove('correct');
     }
   });
 
-  moveCursor(inputWords.length);
-
-  calculateWPM();  // Update WPM dynamically for correct words only
-  calculateAccuracy();  // Update accuracy dynamically
-}
-
-function moveCursor(position) {
-  const textSpans = textDisplay.querySelectorAll("span");
-  if (cursorSpan && textSpans[position]) {
-    textSpans[position].before(cursorSpan);
-  } else {
-    textDisplay.appendChild(cursorSpan);
+  // Highlight the current character
+  const nextCharIndex = inputChars.length;
+  if (textSpans[nextCharIndex]) {
+    textSpans[nextCharIndex].classList.add('current');
   }
+
+  calculateWPM();
+  calculateAccuracy();
 }
 
 function resetTest() {
-  clearInterval(timer); // Clear the timer if it's running
-  isRunning = false;
-  typingStarted = false; // Reset typingStarted flag
-  wordIndex = 0;
-  wordCount = 0;
-  correctWordCount = 0;  // Reset correct word count
+  clearInterval(timer);
+  typingStarted = false;
+  correctCharCount = 0;
   typingArea.disabled = true;
   typingArea.value = "";
-  textDisplay.innerHTML = ""; // Clear the text display
-  timerDisplay.textContent = `Time: ${timeLimit}s`; // Reset the timer display
-  wpmDisplay.textContent = `WPM: 0`; // Reset WPM display
-  accuracyDisplay.textContent = `Accuracy: 0%`;  // Reset accuracy display
-  accuracyBar.style.width = `0%`;  // Reset accuracy bar
+  textDisplay.innerHTML = "";
+  timerDisplay.textContent = `Time: ${timeLimit}s`;
+  wpmDisplay.textContent = `WPM: 0`;
+  accuracyDisplay.textContent = `Accuracy: 0%`;
+  accuracyBar.style.width = `0%`;
 }
-startButton.addEventListener("click", startTest);
+function onInput() {
+  if (!typingStarted) {
+    startTime = new Date().getTime();
+    typingStarted = true;
+    timer = setInterval(updateTimer, 1000);
+  }
+
+  const inputChars = typingArea.value.split('');
+  const textSpans = textDisplay.querySelectorAll("span");
+
+  correctCharCount = 0;
+
+  textSpans.forEach((charSpan, index) => {
+    const inputChar = inputChars[index];
+    if (inputChar == null) {
+      charSpan.classList.remove('correct', 'incorrect', 'current');
+    } else if (inputChar === charSpan.textContent) {
+      charSpan.classList.add('correct');
+      charSpan.classList.remove('incorrect');
+      correctCharCount++;
+    } else {
+      charSpan.classList.add('incorrect');
+      charSpan.classList.remove('correct');
+    }
+  });
+
+  // Set the current character style and keep it within view
+  const nextCharIndex = inputChars.length;
+  if (textSpans[nextCharIndex]) {
+    textSpans.forEach((span) => span.classList.remove('current'));
+    textSpans[nextCharIndex].classList.add('current');
+
+    // Calculate position to keep the current character within view
+    const currentChar = textSpans[nextCharIndex];
+    const offset = currentChar.offsetLeft - textDisplay.offsetWidth / 2 + currentChar.offsetWidth / 2;
+    textDisplay.scrollLeft = offset;
+  }
+
+  calculateWPM();
+  calculateAccuracy();
+}
+
+
+// Event listener for typing input
+typingArea.addEventListener("input", onInput);
