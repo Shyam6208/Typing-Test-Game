@@ -146,5 +146,47 @@ function resetTest() {
   accuracyDisplay.textContent = `Accuracy: 0%`;  // Reset accuracy display
   accuracyBar.style.width = `0%`;  // Reset accuracy bar
 }
+function onInput() {
+  if (!typingStarted) {
+    startTime = new Date().getTime();
+    typingStarted = true;
+    timer = setInterval(updateTimer, 1000);
+  }
+
+  const inputChars = typingArea.value.split('');
+  const textSpans = textDisplay.querySelectorAll("span");
+
+  correctCharCount = 0;
+
+  textSpans.forEach((charSpan, index) => {
+    const inputChar = inputChars[index];
+    if (inputChar == null) {
+      charSpan.classList.remove('correct', 'incorrect', 'current');
+    } else if (inputChar === charSpan.textContent) {
+      charSpan.classList.add('correct');
+      charSpan.classList.remove('incorrect');
+      correctCharCount++;
+    } else {
+      charSpan.classList.add('incorrect');
+      charSpan.classList.remove('correct');
+    }
+  });
+
+  // Set the current character style and keep it within view
+  const nextCharIndex = inputChars.length;
+  if (textSpans[nextCharIndex]) {
+    textSpans.forEach((span) => span.classList.remove('current'));
+    textSpans[nextCharIndex].classList.add('current');
+
+    // Calculate position to keep the current character within view
+    const currentChar = textSpans[nextCharIndex];
+    const offset = currentChar.offsetLeft - textDisplay.offsetWidth / 2 + currentChar.offsetWidth / 2;
+    textDisplay.scrollLeft = offset;
+  }
+
+  calculateWPM();
+  calculateAccuracy();
+}
+
 
 startButton.addEventListener("click", startTest);
