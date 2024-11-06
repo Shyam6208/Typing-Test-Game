@@ -131,6 +131,27 @@
     background-color: green;
     transition: width 0.3s;
   }
+  #startButton:hover {
+    background-color: green; /* or any color that contrasts nicely */
+    color: #1c1c1e; /* change text color for better contrast */
+    cursor: pointer; /* change cursor to indicate interactivity */
+}
+#textDisplay {
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 1.2em; /* Adjust font size as needed */
+  position: relative;
+  max-width: 100%; /* Limits display width */
+}
 
+.correct {
+  color: green;
+}
 
-  
+.incorrect {
+  color: red;
+}
+
+.current {
+  border-bottom: 2px solid blue; /* Underline the current character */
+}
